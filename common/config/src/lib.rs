@@ -80,3 +80,31 @@ impl Default for LevelFilter {
         Self::Trace
     }
 }
+
+#[cfg(feature = "log")]
+impl From<log::LevelFilter> for LevelFilter {
+    fn from(level: log::LevelFilter) -> Self {
+        match level {
+            log::LevelFilter::Off => LevelFilter::Off,
+            log::LevelFilter::Error => LevelFilter::Error,
+            log::LevelFilter::Warn => LevelFilter::Warn,
+            log::LevelFilter::Info => LevelFilter::Info,
+            log::LevelFilter::Debug => LevelFilter::Debug,
+            log::LevelFilter::Trace => LevelFilter::Trace,
+        }
+    }
+}
+
+#[cfg(feature = "log")]
+impl From<LevelFilter> for log::LevelFilter {
+    fn from(level: LevelFilter) -> Self {
+        match level {
+            LevelFilter::Off => log::LevelFilter::Off,
+            LevelFilter::Error => log::LevelFilter::Error,
+            LevelFilter::Warn => log::LevelFilter::Warn,
+            LevelFilter::Info => log::LevelFilter::Info,
+            LevelFilter::Debug => log::LevelFilter::Debug,
+            LevelFilter::Trace => log::LevelFilter::Trace,
+        }
+    }
+}
