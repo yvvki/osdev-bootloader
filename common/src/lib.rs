@@ -43,7 +43,7 @@ const PAGE_SIZE: u64 = 4096;
 pub fn init_logger(
     framebuffer: &'static mut [u8],
     info: FrameBufferInfo,
-    log_level: LevelFilter,
+    log_level: impl Into<log::LevelFilter>,
     frame_buffer_logger_status: bool,
     serial_logger_status: bool,
 ) {
@@ -56,19 +56,8 @@ pub fn init_logger(
         )
     });
     log::set_logger(logger).expect("logger already set");
-    log::set_max_level(convert_level(log_level));
+    log::set_max_level(log_level.into());
     log::info!("Framebuffer info: {:?}", info);
-}
-
-fn convert_level(level: LevelFilter) -> log::LevelFilter {
-    match level {
-        LevelFilter::Off => log::LevelFilter::Off,
-        LevelFilter::Error => log::LevelFilter::Error,
-        LevelFilter::Warn => log::LevelFilter::Warn,
-        LevelFilter::Info => log::LevelFilter::Info,
-        LevelFilter::Debug => log::LevelFilter::Debug,
-        LevelFilter::Trace => log::LevelFilter::Trace,
-    }
 }
 
 /// Required system information that should be queried from the BIOS or UEFI firmware.
